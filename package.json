@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@rushstack/eslint-patch": "^1.10.5",
+    "@tabler/icons": "^3.28.1",
+    "@tabler/icons-vue": "^3.29.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@tailwindcss/vite": "^4.0.0",
     "@vitejs/plugin-vue": "^5.2.1",

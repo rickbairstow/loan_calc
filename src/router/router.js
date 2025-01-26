@@ -1,21 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import DefaultLayout from '@Layout/Default.vue';
 
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: () => import('../pages/Home.vue'),
-    },
-    {
-        path: '/calculator',
-        name: 'Calculator',
-        component: () => import('../pages/Calculator.vue'),
-    },
-    {
-        path: '/history',
-        name: 'History',
-        component: () => import('../pages/History.vue'),
-    },
+        component: DefaultLayout,
+        children: [
+            {
+                path: '',
+                name: 'Home',
+                component: () => import('@Pages/Home.vue'),
+            },
+            {
+                path: '/calculator',
+                name: 'Calculator',
+                component: () => import('@Pages/Calculator.vue'),
+            },
+            {
+                path: '/history',
+                name: 'History',
+                component: () => import('@Pages/History.vue'),
+            },
+        ],
+    }
 ];
 
 const router = createRouter({
