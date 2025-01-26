@@ -14,6 +14,7 @@ import CalculatorInputs from "@Components/CalculatorInputs.vue";
 import CalculatorOutputs from "@Components/CalculatorOutputs.vue";
 
 const saveLoan = () => {
+  // validate inputs
   // collect inputs
   // save to state
   // Trigger save feedback

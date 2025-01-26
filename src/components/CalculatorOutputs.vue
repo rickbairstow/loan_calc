@@ -3,6 +3,7 @@
     <Chart :interest="100" :principle="80"/>
     <div class="flex-1">
       Summary Items
+      TODO
     </div>
     <div class="flex gap-4">
       <Button
