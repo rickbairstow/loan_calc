@@ -12,12 +12,14 @@ import { computed } from 'vue'
 
 // Import used icons
 import {
-  IconCalculator as Calculator
+  IconCalculator as Calculator,
+  IconLoader as Loader
 } from '@tabler/icons-vue'
 
 // Define icons for use
 const icons = {
-  Calculator
+  Calculator,
+  Loader
 }
 
 // Define sizes, handy for matching Tailwind values, and useful for enhanced prop validation.

@@ -87,10 +87,16 @@
     </div>
 
     <Button
+        :aria-label="isSaving ? 'Form is saving' : 'Save form'"
         :disabled="!isDirty"
         type="submit"
     >
-      Save
+      <Icon
+          v-if="isSaving"
+          class="animate-spin [animation-duration:2s]"
+          icon="Loader"
+      />
+      <span v-else>Save</span>
     </Button>
   </form>
 </template>
@@ -104,6 +110,7 @@ import InputSelect from "@Components/InputSelect.vue";
 import Button from "@Components/Button.vue";
 import {deepEqual} from "@Utils/deepCompare.js";
 import {addCalculation, setTempCalculation } from "@Composables/useCalculator.js";
+import Icon from "@Components/Icon.vue";
 
 const props = defineProps({
   formData: {
@@ -117,9 +124,8 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update'])
-
 const calculatorForm = ref(null);
+const isSaving = ref(false)
 const currencyOptions = [
   {
     text: 'GPB £',
@@ -152,20 +158,31 @@ onMounted(() => {
 })
 
 const formValues = ref({ ...initialFormData.value });
-
 const isDirty = computed(() => !deepEqual(formValues.value, initialFormData.value))
 
-const submitForm = () => {
+const submitForm = async () => {
   const formEl = calculatorForm?.value;
   if (!formEl) return
 
-  const { uuid } = props
+  try {
+    isSaving.value = true
 
-  if (formEl.checkValidity()) {
-    initialFormData.value = formValues.value;
-    addCalculation(uuid, formValues.value)
-  } else {
-    formEl.reportValidity();
+    // Simulate delay so that we can see the loader.
+    const delay = ms => new Promise(r => setTimeout(r, ms));
+    await delay(500);
+
+    const { uuid } = props
+
+    if (formEl.checkValidity()) {
+      initialFormData.value = formValues.value;
+      await addCalculation(uuid, formValues.value)
+    } else {
+      formEl.reportValidity();
+    }
+  } catch (e) {
+    console.log('Error:', e)
+  } finally {
+    isSaving.value = false
   }
 };
 

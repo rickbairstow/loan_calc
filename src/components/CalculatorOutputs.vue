@@ -31,7 +31,6 @@ import { temporaryCalculation } from "@Composables/useCalculator.js";
 import {formatCurrency} from "@Utils/formatCurrency.js";
 
 const summaryData = computed(() => {
-  console.log(temporaryCalculation.value)
   return {
     dailyInterestNoMargin: {
       text: 'Daily Interest (no margin)',
