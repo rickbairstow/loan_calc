@@ -99,7 +99,7 @@ import InputNumber from "@Components/InputNumber.vue";
 import InputSelect from "@Components/InputSelect.vue";
 import Button from "@Components/Button.vue";
 import {deepEqual} from "@Utils/deepCompare.js";
-import {addHistory, calculatorHistory} from "@Composables/useCalculator.js";
+import {addCalculation} from "@Composables/useCalculator.js";
 
 const props = defineProps({
   formData: {
@@ -157,7 +157,7 @@ const submitForm = () => {
 
   if (formEl.checkValidity()) {
     initialFormData.value = formValues.value;
-    addHistory(uuid, formValues.value)
+    addCalculation(uuid, formValues.value)
   } else {
     formEl.reportValidity();
   }

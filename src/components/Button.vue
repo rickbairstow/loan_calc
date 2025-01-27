@@ -19,7 +19,8 @@ const props = defineProps({
     validator: (value) => {
       return [
         'primary',
-        'secondary'
+        'secondary',
+        'text'
       ].includes(value)
     }
   },

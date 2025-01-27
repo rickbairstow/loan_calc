@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-semibold mb-4">History</h1>
+    <h1 class="text-2xl font-bold mb-4">History</h1>
     <div
         v-if="calculatorHistory?.length"
         class="w-full min-w-full overflow-x-scroll"
@@ -19,13 +19,18 @@
             :key="item.id"
             :class="rowClasses"
         >
-          <td :class="cellClasses">{{ item.id }}</td>
-          <td :class="cellClasses">{{ item.formData.startDate }}</td>
-          <td :class="cellClasses">{{ item.formData.endDate }}</td>
-          <td :class="cellClasses">{{ item.formData.loanCurrency }}</td>
-          <td :class="cellClasses">{{ item.formData.loanAmount }}</td>
-          <td :class="cellClasses">{{ item.formData.baseInterestRate }}</td>
-          <td :class="cellClasses">{{ item.formData.margin }}</td>
+          <td :class="cellClasses">{{ formatDate(item.created) }}</td>
+          <td :class="cellClasses">
+            {{ formatCurrency(item.dailyInterestNoMargin, currencyLookup?.[item.formData.loanCurrency]?.locale) }}
+          </td>
+          <td :class="cellClasses">
+            {{ formatCurrency(item.dailyInterest, currencyLookup?.[item.formData.loanCurrency]?.locale) }}
+          </td>
+          <td :class="cellClasses">{{ formatDate(item.accrualDate) }}</td>
+          <td :class="cellClasses">{{ item.daysSinceStart }} days</td>
+          <td :class="cellClasses">
+            {{ formatCurrency(item.totalInterest, currencyLookup?.[item.formData.loanCurrency]?.locale) }}
+          </td>
           <td :class="cellClasses">
             <Button
                 button-type="text"
@@ -55,21 +60,48 @@
 </template>
 
 <script setup>
+import { format } from "date-fns";
 import Button from "@Components/Button.vue";
 import { calculatorHistory } from "@Composables/useCalculator.js";
+import { formatCurrency } from "@Utils/formatCurrency.js";
 
+// Headers for the table
 const headers = [
-  "ID",
-  "Start Date",
-  "End Date",
-  "Loan Currency",
-  "Loan Amount",
-  "Base Interest Rate",
-  "Margin",
+  "Date Created",
+  "Daily Interest (No Margin)",
+  "Daily Interest",
+  "Accrual Date",
+  "No. Days Since Start",
+  "Total Interest",
   "Actions",
 ];
 
-const cellClasses = "border border-zinc-300 px-4 py-2";
+// Utility function to format dates using date-fns
+const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  return format(new Date(dateStr), "do MMM yyyy"); // Example: "1st Jan 2025"
+};
+
+// Abstracted Tailwind classes
+const cellClasses = "border border-zinc-300 px-4 py-2 whitespace-nowrap text-center";
 const headerRowClasses = "bg-gray-200 text-left";
 const rowClasses = "hover:bg-gray-200 even:bg-gray-100 odd:bg-white";
+
+const currencyLookup = {
+  gbp: {
+    locale: "gbp",
+    text: "GBP",
+    symbol: "£",
+  },
+  eur: {
+    locale: "eur",
+    text: "EUR",
+    symbol: "€",
+  },
+  usd: {
+    locale: "usd",
+    text: "USD",
+    symbol: "$",
+  },
+};
 </script>

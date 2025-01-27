@@ -1,16 +1,20 @@
 <template>
-  <div
-      :key="routeKey"
-      class="flex flex-wrap overflow-hidden rounded-lg shadow-lg border border-zinc-300 divide-y-1 lg:divide-y-0 lg:divide-x-1 divide-zinc-300"
-  >
-    <CalculatorInputs
-        class="basis-full lg:basis-[50%]"
-        v-bind="{ uuid, ...(existingData ? { formData: existingData } : {}) }"
-    />
-    <CalculatorOutputs
-        class="basis-full lg:basis-[50%]"
-        :uuid="uuid.value"
-    />
+  <div>
+    <h1 class="text-2xl font-bold mb-4">Calculator</h1>
+
+    <div
+        :key="routeKey"
+        class="flex flex-wrap overflow-hidden rounded-lg shadow-lg border border-zinc-300 divide-y-1 lg:divide-y-0 lg:divide-x-1 divide-zinc-300"
+    >
+      <CalculatorInputs
+          class="basis-full lg:basis-[50%]"
+          v-bind="{ uuid, ...(existingData ? { formData: existingData } : {}) }"
+      />
+      <CalculatorOutputs
+          class="basis-full lg:basis-[50%]"
+          :uuid="uuid"
+      />
+    </div>
   </div>
 </template>
 
@@ -28,10 +32,8 @@ const existingData = computed(() =>
   calculatorHistory.value.find((item) => item.id === uuid.value)?.formData
 );
 
-// Uses the key to force component rebuild when route changes
+// Uses the key to force component rebuild when route changes, so that we don't end up with stale data
 const routeKey = computed(() => route.fullPath);
-
-// Update uuid whenever the route changes
 watch(
   () => route.params?.id,
   (newId) => {

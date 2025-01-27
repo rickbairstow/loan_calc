@@ -40,10 +40,21 @@ const props = defineProps({
 })
 
 const style = computed(() => {
-  const { principle } = props
+  const total = props.principle + props.interest;
+
+  if (total === 0) {
+    // Handle the case where total is 0 to avoid NaN or infinite values
+    return {
+      background: `conic-gradient(#e2e8f0 0% 100%)`, // Gray color fallback
+    };
+  }
+
+  // Calculate percentages
+  const principlePercent = (props.principle / total) * 100;
+  const interestPercent = (props.interest / total) * 100;
 
   return {
-    background: `conic-gradient(#51a2ff 0% ${principle}%, #dcfce7 ${principle}% 100%)`
-  }
-})
+    background: `conic-gradient(#51a2ff 0% ${principlePercent}%, #dcfce7 ${principlePercent}% 100%)`,
+  };
+});
 </script>
