@@ -10,7 +10,7 @@
       </Label>
 
       <InputDate
-          v-model="formData.startDate"
+          v-model="formValues.startDate"
           id="start_date"
           required
       />
@@ -22,7 +22,7 @@
       </Label>
 
       <InputDate
-          v-model="formData.endDate"
+          v-model="formValues.endDate"
           id="end_date"
           required
       />
@@ -34,7 +34,7 @@
       </Label>
 
       <InputSelect
-          v-model="formData.loanCurrency"
+          v-model="formValues.loanCurrency"
           id="loan_currency"
           required
           :options="currencyOptions"
@@ -47,7 +47,7 @@
       </Label>
 
       <InputNumber
-          v-model="formData.loanAmount"
+          v-model="formValues.loanAmount"
           id="loan_amount"
           required
           min="1"
@@ -60,7 +60,7 @@
       </Label>
 
       <InputNumber
-          v-model="formData.baseInterestRate"
+          v-model="formValues.baseInterestRate"
           id="base_interest_rate"
           required
           min="0"
@@ -74,7 +74,7 @@
       </Label>
 
       <InputNumber
-          v-model="formData.margin"
+          v-model="formValues.margin"
           id="margin"
           required
           min="0"
@@ -92,16 +92,21 @@
 </template>
 
 <script setup>
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import Label from "@Components/Label.vue";
 import InputDate from "@Components/InputDate.vue";
 import InputNumber from "@Components/InputNumber.vue";
 import InputSelect from "@Components/InputSelect.vue";
 import Button from "@Components/Button.vue";
 import {deepEqual} from "@Utils/deepCompare.js";
-import {addHistory} from "@Composables/useCalculator.js";
+import {addHistory, calculatorHistory} from "@Composables/useCalculator.js";
 
-defineProps({
+const props = defineProps({
+  formData: {
+    type: Object,
+    default: () => {},
+  },
+
   uuid: {
     type: String,
     required: true
@@ -125,29 +130,34 @@ const currencyOptions = [
 ]
 
 const initialFormData = ref({
-  startDate: "",
-  endDate: "",
-  loanCurrency: "",
-  loanAmount: 0,
-  baseInterestRate: 0,
-  margin: 0,
+  startDate: props.formData?.startDate || '',
+  endDate: props.formData?.endDate || '',
+  loanCurrency: props.formData?.loanCurrency || '',
+  loanAmount: props.formData?.loanAmount || 0,
+  baseInterestRate: props.formData?.baseInterestRate || 0,
+  margin: props.formData?.margin || 0,
 });
 
-const formData = ref({ ...initialFormData.value });
+onMounted(() => {
+  const { formData } = props
+  if (formData) {
+    initialFormData.value = formData
+  }
+})
 
-const isDirty = computed(() => !deepEqual(formData.value, initialFormData.value))
+const formValues = ref({ ...initialFormData.value });
+
+const isDirty = computed(() => !deepEqual(formValues.value, initialFormData.value))
 
 const submitForm = () => {
   const formEl = calculatorForm?.value;
   if (!formEl) return
 
-  if (formEl.checkValidity()) {
-    // Create a deep copy of formData.value
-    initialFormData.value = formData.value;
+  const { uuid } = props
 
-    // TODO: submit form and update query
-    // Push to history
-    addHistory(uuid, formData.value)
+  if (formEl.checkValidity()) {
+    initialFormData.value = formValues.value;
+    addHistory(uuid, formValues.value)
   } else {
     formEl.reportValidity();
   }
