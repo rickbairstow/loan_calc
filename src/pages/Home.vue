@@ -1,7 +1,7 @@
 <template>
-  <HeroContent />
+    <HeroContent />
 </template>
 
 <script setup>
-import HeroContent from "@Components/HeroContent.vue";
+import HeroContent from '@Components/HeroContent.vue'
 </script>

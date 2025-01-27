@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import DefaultLayout from '@Layout/Default.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import DefaultLayout from '@Layout/Default.vue'
 
 const routes = [
     {
@@ -10,25 +10,25 @@ const routes = [
             {
                 path: '/home',
                 name: 'Home',
-                component: () => import('@Pages/Home.vue'),
+                component: () => import('@Pages/Home.vue')
             },
             {
                 path: '/calculator/:id?',
                 name: 'Calculator',
-                component: () => import('@Pages/Calculator.vue'),
+                component: () => import('@Pages/Calculator.vue')
             },
             {
                 path: '/history',
                 name: 'History',
-                component: () => import('@Pages/History.vue'),
-            },
-        ],
+                component: () => import('@Pages/History.vue')
+            }
+        ]
     }
-];
+]
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
-});
+    routes
+})
 
-export default router;
+export default router

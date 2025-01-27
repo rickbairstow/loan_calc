@@ -1,43 +1,43 @@
 <template>
-  <select
-      class="border p-2 rounded w-3xs"
-      :value="modelValue"
-      @input="onInput"
-  >
-    <option
-        disabled
-        value=""
+    <select
+        class="border p-2 rounded w-3xs"
+        :value="modelValue"
+        @input="onInput"
     >
-      Please select...
-    </option>
-    <option
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
-    >
-      {{ option.text }}
-    </option>
-  </select>
+        <option
+            disabled
+            value=""
+        >
+            Please select...
+        </option>
+        <option
+            v-for="option in options"
+            :key="option.value"
+            :value="option.value"
+        >
+            {{ option.text }}
+        </option>
+    </select>
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits } from 'vue'
 
 defineProps({
-  modelValue: {
-    default: '',
-    type: String
-  },
+    modelValue: {
+        default: '',
+        type: String
+    },
 
-  options: {
-    default: () => {},
-    type: Object
-  }
-});
+    options: {
+        default: () => {},
+        type: Object
+    }
+})
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue'])
 
 const onInput = (event) => {
-  emit('update:modelValue', event.target.value);
-};
+    emit('update:modelValue', event.target.value)
+}
 </script>

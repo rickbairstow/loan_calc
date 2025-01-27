@@ -1,5 +1,5 @@
 <template>
-  <label class="font-medium">
-    <slot />
-  </label>
+    <label class="font-medium">
+        <slot />
+    </label>
 </template>
