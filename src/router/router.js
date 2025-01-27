@@ -12,7 +12,7 @@ const routes = [
                 component: () => import('@Pages/Home.vue'),
             },
             {
-                path: '/calculator',
+                path: '/calculator/:id?',
                 name: 'Calculator',
                 component: () => import('@Pages/Calculator.vue'),
             },

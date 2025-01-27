@@ -1,5 +1,6 @@
 <template>
   <component
+      :aria-disabled="disabled"
       :is="element"
       :class="componentStyle"
       :to="href"
@@ -21,6 +22,11 @@ const props = defineProps({
         'secondary'
       ].includes(value)
     }
+  },
+
+  disabled: {
+    default: false,
+    type: Boolean
   },
 
   href: {
@@ -59,10 +65,11 @@ const styles = {
   }
 }
 
-const componentStyle = computed(() => {
-  const { buttonType, size } = props
 
-  return `${styles?.common} ${styles?.padding?.[size]} ${styles?.[buttonType]?.base}`
+const componentStyle = computed(() => {
+  const { buttonType, disabled, size } = props
+
+  return `${styles?.common} ${styles?.padding?.[size]} ${styles?.[buttonType]?.[disabled ? 'disabled' : 'base']}`
 })
 
 const element = computed(() => {

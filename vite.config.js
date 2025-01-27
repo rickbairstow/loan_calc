@@ -20,7 +20,7 @@ export default defineConfig({
             '@Layout': fileURLToPath(new URL('./src/layout', import.meta.url)),
             '@Pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
             '@Router': fileURLToPath(new URL('./src/router', import.meta.url)),
-            '@Utils': fileURLToPath(new URL('./src/utilities', import.meta.url))
+            '@Utils': fileURLToPath(new URL('./src/utils', import.meta.url))
         }
     }
 })

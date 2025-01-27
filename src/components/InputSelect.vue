@@ -4,11 +4,17 @@
       :value="modelValue"
       @input="onInput"
   >
-    <option disabled value="">
+    <option
+        disabled
+        value=""
+    >
       Please select...
     </option>
-    <option value="1">
-      Option 1
+    <option
+        v-for="option in options"
+        :value="option.value"
+    >
+      {{ option.text }}
     </option>
   </select>
 </template>
@@ -20,6 +26,11 @@ defineProps({
   modelValue: {
     default: '',
     type: String
+  },
+
+  options: {
+    default: () => {},
+    type: Object
   }
 });
 
