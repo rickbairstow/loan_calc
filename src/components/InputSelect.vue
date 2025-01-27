@@ -1,6 +1,6 @@
 <template>
   <select
-      class="border p-2 rounded"
+      class="border p-2 rounded w-3xs"
       :value="modelValue"
       @input="onInput"
   >

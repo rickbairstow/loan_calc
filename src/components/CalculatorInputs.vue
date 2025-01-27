@@ -24,6 +24,7 @@
       <InputDate
           v-model="formValues.endDate"
           id="end_date"
+          placeholder="dd / mm / yyyy"
           required
       />
     </div>
@@ -49,6 +50,7 @@
       <InputNumber
           v-model="formValues.loanAmount"
           id="loan_amount"
+          placeholder="123,456"
           required
           min="1"
       />
@@ -56,12 +58,13 @@
 
     <div class="flex flex-col gap-2">
       <Label for="base_interest_rate">
-        Base Interest Rate
+        Base Interest Rate %
       </Label>
 
       <InputNumber
           v-model="formValues.baseInterestRate"
           id="base_interest_rate"
+          placeholder="0.7"
           required
           min="0"
           step="0.01"
@@ -70,14 +73,15 @@
 
     <div class="flex flex-col gap-2">
       <Label for="margin">
-        Margin
+        Margin %
       </Label>
 
       <InputNumber
           v-model="formValues.margin"
           id="margin"
-          required
           min="0"
+          placeholder="0.7"
+          required
           step="0.01"
       />
     </div>
@@ -92,14 +96,14 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import Label from "@Components/Label.vue";
 import InputDate from "@Components/InputDate.vue";
 import InputNumber from "@Components/InputNumber.vue";
 import InputSelect from "@Components/InputSelect.vue";
 import Button from "@Components/Button.vue";
 import {deepEqual} from "@Utils/deepCompare.js";
-import {addCalculation} from "@Composables/useCalculator.js";
+import {addCalculation, setTempCalculation } from "@Composables/useCalculator.js";
 
 const props = defineProps({
   formData: {
@@ -112,6 +116,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const emit = defineEmits(['update'])
 
 const calculatorForm = ref(null);
 const currencyOptions = [
@@ -130,12 +136,12 @@ const currencyOptions = [
 ]
 
 const initialFormData = ref({
-  startDate: props.formData?.startDate || '',
-  endDate: props.formData?.endDate || '',
-  loanCurrency: props.formData?.loanCurrency || '',
-  loanAmount: props.formData?.loanAmount || 0,
-  baseInterestRate: props.formData?.baseInterestRate || 0,
-  margin: props.formData?.margin || 0,
+  startDate: props.formData?.startDate || null,
+  endDate: props.formData?.endDate || null,
+  loanCurrency: props.formData?.loanCurrency || null,
+  loanAmount: props.formData?.loanAmount || null,
+  baseInterestRate: props.formData?.baseInterestRate || null,
+  margin: props.formData?.margin || null,
 });
 
 onMounted(() => {
@@ -163,4 +169,20 @@ const submitForm = () => {
   }
 };
 
+watch(
+    () => formValues.value,
+    (newValues) => {
+      if (!newValues) return
+
+      const { uuid } = props
+      setTempCalculation({
+        id: uuid,
+        formData: newValues
+      })
+    },
+    {
+      deep: true,
+      immediate: true
+    }
+)
 </script>

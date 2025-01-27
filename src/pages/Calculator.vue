@@ -10,10 +10,8 @@
           class="basis-full lg:basis-[50%]"
           v-bind="{ uuid, ...(existingData ? { formData: existingData } : {}) }"
       />
-      <CalculatorOutputs
-          class="basis-full lg:basis-[50%]"
-          :uuid="uuid"
-      />
+
+      <CalculatorOutputs class="basis-full lg:basis-[50%]" />
     </div>
   </div>
 </template>

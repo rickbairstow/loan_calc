@@ -1,62 +1,12 @@
 import { ref } from 'vue'
 
-const calculatorHistory = ref([
-    {
-        id: 'rick-test1',
-        created: '2025-01-01',
-        dailyInterestNoMargin: '0',
-        dailyInterest: '0',
-        accrualDate: '2025-02-03',
-        daysSinceStart: '123',
-        totalInterest: '12345',
-        total: '123456',
-        formData: {
-            startDate: "2025-01-01",
-            endDate: "2025-01-01",
-            loanCurrency: "gbp",
-            loanAmount: 123456,
-            baseInterestRate: 0,
-            margin: 0,
-        }
-    },
-    {
-        id: 'rick-test2',
-        created: '2025-01-01',
-        dailyInterestNoMargin: '0',
-        dailyInterest: '0',
-        accrualDate: '2025-02-03',
-        daysSinceStart: '123',
-        totalInterest: '12345',
-        total: '123456',
-        formData: {
-            startDate: "2024-01-01",
-            endDate: "2025-01-01",
-            loanCurrency: "gbp",
-            loanAmount: 123456,
-            baseInterestRate: 0,
-            margin: 0,
-        }
-    },
-    {
-        id: 'rick-test3',
-        created: '2025-01-01',
-        dailyInterestNoMargin: '0',
-        dailyInterest: '0',
-        accrualDate: '2025-02-03',
-        daysSinceStart: '123',
-        totalInterest: '12345',
-        total: '123456',
-        formData: {
-            startDate: "2024-01-01",
-            endDate: "2025-01-01",
-            loanCurrency: "usd",
-            loanAmount: 123456,
-            baseInterestRate: 0,
-            margin: 0,
-        }
-    }
-])
+// Stores a temporary calculation for connected use with the form data.
+const temporaryCalculation = ref({})
 
+// Storage for calculations.
+const calculatorHistory = ref([])
+
+// Responsible for adding the calculation to storage
 const addCalculation = async (id, formData) => {
     if (!id || !formData) return
 
@@ -74,45 +24,71 @@ const addCalculation = async (id, formData) => {
 
         calculatorHistory.value.push(calculatedData)
     }
-
-    console.log('History is', { calculatorHistory: calculatorHistory.value })
 }
 
 const calculateData = (data) => {
     const { formData } = data;
 
-    // Ensure dates are valid Date objects
-    const startDate = new Date(formData.startDate);
-    const today = new Date();
+    const startDate = formData.startDate ? new Date(formData.startDate) : null;
+    const today = formData.useCurrentDate !== false ? new Date() : null;
 
-    // Calculate daysSinceStart
-    const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)); // Difference in days
+    const daysSinceStart = startDate && today && !isNaN(startDate)
+        ? Math.max(0, Math.floor((today - startDate) / (1000 * 60 * 60 * 24)))
+        : null;
 
-    // Calculate dailyInterestNoMargin (baseInterestRate applied)
-    const dailyInterestNoMargin = (formData.loanAmount * (formData.baseInterestRate / 100)) / 365;
+    const loanAmount = Number(formData.loanAmount) || null;
+    const baseInterestRate = Number(formData.baseInterestRate) || null;
+    const margin = Number(formData.margin) || null;
 
-    // Calculate dailyInterest (baseInterestRate + margin applied)
-    const dailyInterest = (formData.loanAmount * ((formData.baseInterestRate + formData.margin) / 100)) / 365;
+    const dailyInterestNoMargin = loanAmount && baseInterestRate !== null
+        ? (loanAmount * (baseInterestRate / 100)) / 365
+        : null;
 
-    // Calculate totalInterest
-    const totalInterest = dailyInterest * daysSinceStart;
+    const dailyInterest = loanAmount && baseInterestRate !== null && margin !== null
+        ? (loanAmount * ((baseInterestRate + margin) / 100)) / 365
+        : null;
 
-    // Calculate total (loanAmount + totalInterest)
-    const total = formData.loanAmount + totalInterest;
+    const totalInterest = dailyInterest !== null && daysSinceStart !== null
+        ? dailyInterest * daysSinceStart
+        : null;
 
-    // Calculate accrualDate (date of totalInterest calculation)
-    const accrualDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+    const total = loanAmount !== null && totalInterest !== null
+        ? loanAmount + totalInterest
+        : null;
+
+    const accrualDate = today && loanAmount && baseInterestRate && daysSinceStart
+        ? today.toISOString().split('T')[0]
+        : null;
 
     return {
         ...data,
-        created: today.toISOString().split("T")[0],
-        dailyInterestNoMargin: dailyInterestNoMargin.toFixed(2), // Keep two decimal points
-        dailyInterest: dailyInterest.toFixed(2), // Keep two decimal points
+        created: today ? today.toISOString().split('T')[0] : null,
+        dailyInterestNoMargin: dailyInterestNoMargin !== null ? dailyInterestNoMargin.toFixed(2) : null,
+        dailyInterest: dailyInterest !== null ? dailyInterest.toFixed(2) : null,
         accrualDate,
-        daysSinceStart: daysSinceStart.toString(),
-        totalInterest: totalInterest.toFixed(2), // Keep two decimal points
-        total: total.toFixed(2), // Keep two decimal points
+        daysSinceStart: daysSinceStart !== null ? daysSinceStart.toString() : null,
+        totalInterest: totalInterest !== null ? totalInterest.toFixed(2) : null,
+        total: total !== null ? total.toFixed(2) : null,
     };
 };
 
-export { addCalculation, calculatorHistory, calculateData }
+// This takes temporary data and stores it in this composable so that it's available as live data anywhere
+const setTempCalculation = (data = {}) => {
+    const populatedData = {
+        id: data.id || null,
+        formData: {
+            startDate: data.formData?.startDate || '',
+            endDate: data.formData?.endDate || '',
+            loanCurrency: data.formData?.loanCurrency || '',
+            loanAmount: Number(data.formData?.loanAmount || 0),
+            baseInterestRate: Number(data.formData?.baseInterestRate || 0),
+            margin: Number(data.formData?.margin || 0),
+        },
+    };
+
+    temporaryCalculation.value = calculateData(populatedData);
+    console.log(temporaryCalculation.value)
+};
+
+
+export { addCalculation, calculatorHistory, calculateData, temporaryCalculation, setTempCalculation }

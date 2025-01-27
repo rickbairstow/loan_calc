@@ -1,6 +1,6 @@
 <template>
   <input
-      class="border p-2 rounded"
+      class="border p-2 rounded w-3xs"
       type="date"
       :value="modelValue"
       @input="onInput"

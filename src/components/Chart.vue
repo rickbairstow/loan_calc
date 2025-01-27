@@ -8,7 +8,7 @@
       <div class="absolute inset-8 bg-white rounded-full ring-1 ring-slate-500"/>
       <p class="absolute inset-0 flex flex-col items-center justify-center">
         <span class="font-bold">Total</span>
-        <span>£123,456</span>
+        <span>{{ formattedCurrency }}</span>
       </p>
     </div>
 
@@ -27,34 +27,45 @@
 
 <script setup>
 import { computed } from 'vue'
+import {formatCurrency} from "@Utils/formatCurrency.js";
 
 const props = defineProps({
+  currency: {
+    default: 'gbp',
+    type: String,
+  },
+
   interest: {
-    required: true,
+    default: 0,
     type: Number,
   },
+
   principle: {
-    required: true,
+    default: 0,
     type: Number,
   },
 })
 
 const style = computed(() => {
-  const total = props.principle + props.interest;
+  const { principle, interest } = props
+  const total = principle + interest;
 
   if (total === 0) {
-    // Handle the case where total is 0 to avoid NaN or infinite values
     return {
       background: `conic-gradient(#e2e8f0 0% 100%)`, // Gray color fallback
     };
   }
 
-  // Calculate percentages
   const principlePercent = (props.principle / total) * 100;
-  const interestPercent = (props.interest / total) * 100;
 
   return {
     background: `conic-gradient(#51a2ff 0% ${principlePercent}%, #dcfce7 ${principlePercent}% 100%)`,
   };
 });
+
+const formattedCurrency = computed(() => {
+  const { principle, interest, currency } = props
+  const total = (principle || 0) + (interest || 0)
+  return formatCurrency(total, currency || 'gbp')
+})
 </script>
