@@ -5,9 +5,10 @@ const routes = [
     {
         path: '/',
         component: DefaultLayout,
+        redirect: '/home',
         children: [
             {
-                path: '',
+                path: '/home',
                 name: 'Home',
                 component: () => import('@Pages/Home.vue'),
             },

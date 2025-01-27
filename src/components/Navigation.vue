@@ -16,7 +16,7 @@ import Icon from "@Components/Icon.vue";
 const navLinks = [
   {
     name: 'Home',
-    to: '/'
+    to: '/home'
   },
   {
     name: 'Calculator',

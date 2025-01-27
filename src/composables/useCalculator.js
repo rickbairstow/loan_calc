@@ -2,9 +2,20 @@ import { ref } from 'vue'
 
 const calculatorHistory = ref([
     {
-        id: 'testing',
+        id: 'rick-test1',
         formData: {
             startDate: "2025-01-01",
+            endDate: "2025-01-01",
+            loanCurrency: "gbp",
+            loanAmount: 123456,
+            baseInterestRate: 0,
+            margin: 0,
+        }
+    },
+    {
+        id: 'rick-test2',
+        formData: {
+            startDate: "2024-01-01",
             endDate: "2025-01-01",
             loanCurrency: "gbp",
             loanAmount: 123456,

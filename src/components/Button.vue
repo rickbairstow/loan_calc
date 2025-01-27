@@ -62,6 +62,11 @@ const styles = {
   secondary: {
     base: 'text-black bg-white border-gray-200 hover:bg-gray-200',
     disabled: 'text-black bg-gray-100 border-gray-100 pointer-events-none'
+  },
+  text: {
+    base: 'text-blue-600 bg-transparent border-transparent hover:text-blue-700 hover:underline',
+    disabled:
+        'text-blue-900 bg-transparent border-transparent pointer-events-none'
   }
 }
 
