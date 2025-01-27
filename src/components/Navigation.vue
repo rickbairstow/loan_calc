@@ -11,8 +11,9 @@
 </template>
 
 <script setup>
-import NavLinks from '@Components/NavLinks.vue'
 import Icon from '@Components/Icon.vue'
+import NavLinks from '@Components/NavLinks.vue'
+
 const navLinks = [
     {
         name: 'Home',

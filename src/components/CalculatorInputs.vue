@@ -91,17 +91,17 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import Label from '@Components/Label.vue'
-import InputDate from '@Components/InputDate.vue'
-import InputNumber from '@Components/InputNumber.vue'
-import InputSelect from '@Components/InputSelect.vue'
-import Button from '@Components/Button.vue'
 import { deepEqual } from '@Utils/deepCompare.js'
 import {
     addCalculation,
     setTempCalculation
 } from '@Composables/useCalculator.js'
+import Button from '@Components/Button.vue'
 import Icon from '@Components/Icon.vue'
+import InputDate from '@Components/InputDate.vue'
+import InputNumber from '@Components/InputNumber.vue'
+import InputSelect from '@Components/InputSelect.vue'
+import Label from '@Components/Label.vue'
 import router from '@Router/router.js'
 
 const props = defineProps({

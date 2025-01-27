@@ -21,10 +21,10 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import CalculatorInputs from '@Components/CalculatorInputs.vue'
 import CalculatorOutputs from '@Components/CalculatorOutputs.vue'
 import { calculatorHistory } from '@Composables/useCalculator.js'
+import { useRoute } from 'vue-router'
 
 const generateUuid = (id) =>
     id || `${Date.now()}-${Math.random().toString(36).substring(2, 10)}`

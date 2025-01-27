@@ -1,7 +1,7 @@
 @use 'tailwindcss';
 
 @layer base {
-  *:focus {
-    @apply outline-none ring-1 ring-blue-500;
-  }
+    *:focus {
+        @apply outline-none ring-1 ring-blue-500;
+    }
 }

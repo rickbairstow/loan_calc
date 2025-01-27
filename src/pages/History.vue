@@ -91,9 +91,9 @@
 
 <script setup>
 import { format } from 'date-fns'
-import Button from '@Components/Button.vue'
 import { calculatorHistory } from '@Composables/useCalculator.js'
 import { formatCurrency } from '@Utils/formatCurrency.js'
+import Button from '@Components/Button.vue'
 
 // Headers for the table
 const headers = [

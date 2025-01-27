@@ -25,9 +25,9 @@
 <script setup>
 import { computed } from 'vue'
 import { format } from 'date-fns'
-import Chart from '@Components/Chart.vue'
-import { temporaryCalculation } from '@Composables/useCalculator.js'
 import { formatCurrency } from '@Utils/formatCurrency.js'
+import { temporaryCalculation } from '@Composables/useCalculator.js'
+import Chart from '@Components/Chart.vue'
 
 const summaryData = computed(() => {
     return {
