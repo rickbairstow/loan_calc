@@ -111,6 +111,7 @@ import Button from "@Components/Button.vue";
 import {deepEqual} from "@Utils/deepCompare.js";
 import {addCalculation, setTempCalculation } from "@Composables/useCalculator.js";
 import Icon from "@Components/Icon.vue";
+import router from "@Router/router.js";
 
 const props = defineProps({
   formData: {
@@ -179,8 +180,10 @@ const submitForm = async () => {
     } else {
       formEl.reportValidity();
     }
+
+    await router.push('/history')
   } catch (e) {
-    console.log('Error:', e)
+    console.error('Error:', e)
   } finally {
     isSaving.value = false
   }

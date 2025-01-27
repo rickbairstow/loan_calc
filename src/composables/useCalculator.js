@@ -13,8 +13,6 @@ const addCalculation = (id, formData) => {
     try {
         const existingItem = calculatorHistory.value.findIndex(item => item?.id === id);
 
-        console.log(existingItem, id)
-
         const data = {
             id,
             formData,
@@ -30,8 +28,6 @@ const addCalculation = (id, formData) => {
     } catch (e) {
         console.error('Error:', e);
     }
-
-    console.log(calculatorHistory)
 };
 
 // Handles the heavy lifting for all calculations

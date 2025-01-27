@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex items-center justify-between min-h-20 px-8">
+  <nav class="flex items-center gap-8 min-h-20 px-8">
     <Icon
         class="text-black"
         icon="Calculator"
