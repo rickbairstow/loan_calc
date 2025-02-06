@@ -5,9 +5,7 @@
             v-if="calculatorHistory?.length"
             class="w-full min-w-full overflow-x-scroll"
         >
-            <table
-                class="w-full table-auto border-collapse border border-zinc-300 rounded-lg"
-            >
+            <table class="w-full table-auto border-collapse border border-zinc-300 rounded-lg">
                 <thead>
                     <tr :class="headerRowClasses">
                         <th
